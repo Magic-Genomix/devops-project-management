@@ -26,8 +26,9 @@ jobs:
 
 
       # Step 3: Build and test Spring Boot backend using Maven
-      - name: Build and test Spring Boot backend
-        run: mvn clean install -f Back/pom.xml
+      - name: Build with Maven (Debug Mode)
+        run: mvn clean install -X -f Back/pom.xml
+
 
   # Job 2: Frontend - Build and Test Angular Application
   frontend:
