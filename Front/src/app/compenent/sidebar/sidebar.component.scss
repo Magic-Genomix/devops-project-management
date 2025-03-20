@@ -1,0 +1,126 @@
+// Variables
+$primary-color: #4a90e2;
+$secondary-color: #2c3e50;
+$accent-color: #e74c3c;
+$text-color: #333333;
+$light-gray: #f5f6fa;
+$white: #ffffff;
+
+// Sidebar styles
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background: linear-gradient(to bottom, $secondary-color, darken($secondary-color, 10%));
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding: 2rem 0;
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      margin: 0.5rem 0;
+      
+      a, 
+      button {
+        display: block;
+        padding: 1rem 1.5rem;
+        color: rgba($white, 0.8);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        width: 100%;
+        text-align: left;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+        position: relative;
+        
+        &:before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 0;
+          height: 100%;
+          width: 4px;
+          background-color: $accent-color;
+          transform: scaleY(0);
+          transition: transform 0.2s ease;
+        }
+
+        &:hover {
+          color: $white;
+          background-color: rgba($white, 0.1);
+          padding-left: 2rem;
+
+          &:before {
+            transform: scaleY(1);
+          }
+        }
+      }
+
+      &.active {
+        a, 
+        button {
+          color: $white;
+          background-color: rgba($primary-color, 0.2);
+          font-weight: 600;
+
+          &:before {
+            transform: scaleY(1);
+          }
+        }
+      }
+    }
+  }
+
+  // Responsive styles
+  @media (max-width: 768px) {
+    width: 100%;
+    height: auto;
+    position: relative;
+    padding: 1rem 0;
+
+    ul {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+
+      li {
+        margin: 0;
+        width: 100%;
+
+        a, 
+        button {
+          text-align: center;
+          padding: 1rem;
+
+          &:hover {
+            padding-left: 1rem;
+          }
+
+          &:before {
+            width: 100%;
+            height: 4px;
+            top: auto;
+            bottom: 0;
+            transform: scaleX(0);
+          }
+        }
+
+        &.active {
+          a, 
+          button {
+            &:before {
+              transform: scaleX(1);
+            }
+          }
+        }
+      }
+    }
+  }
+}

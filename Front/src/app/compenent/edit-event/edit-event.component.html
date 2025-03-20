@@ -1,0 +1,36 @@
+<app-sidebar></app-sidebar>
+
+<div class="edit-event">
+  <h2>Edit Event</h2>
+  
+  <form [formGroup]="eventForm" (ngSubmit)="updateEvent()">
+    <div>
+      <label for="title">Title</label>
+      <input id="title" formControlName="title" />
+    </div>
+    
+    <div>
+      <label for="description">Description</label>
+      <input id="description" formControlName="description" />
+    </div>
+    
+    <div>
+      <label for="date">Date
+        <div *ngIf="eventForm.get('date')?.hasError('invalidDate') && eventForm.get('date')?.touched" class="error">
+          The event date must be today or later.
+        </div>
+      </label>
+      <input type="date" id="date" formControlName="date" />
+    </div>
+    
+    <div>
+      <label for="location">Location</label>
+      <input id="location" formControlName="location" />
+    </div>
+    
+    <div>
+      <button type="submit" [disabled]="!eventForm.valid">Update</button>
+      <button type="button" (click)="cancelEdit()">Cancel</button>
+    </div>
+  </form>
+</div>

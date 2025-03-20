@@ -1,0 +1,24 @@
+<app-sidebar></app-sidebar>
+
+
+
+<div class="event-list">
+  <h2>Upcoming Events</h2>
+  <div class="filter">
+    <label for="filter">Filter Events:</label>
+    <select [(ngModel)]="filterType" (change)="applyFilter()">
+      <option value="all">All Events</option>
+      <option value="registered">Registered Events</option>
+      <option value="unregistered">Unregistered Events</option>
+    </select>
+  </div>
+  <div *ngFor="let event of filteredEvents" class="event-item">
+    <h3>{{ event.title }}</h3>
+    <p>{{ event.description }}</p>
+    <p><strong>Date:</strong> {{ event.date }}</p>
+    <p><strong>Location:</strong> {{ event.location }}</p>
+
+    <button *ngIf="isRegistered(event.id)" (click)="unregisterFromEvent(event.id)">Unregister</button>
+    <button *ngIf="!isRegistered(event.id)" (click)="registerForEvent(event.id)">Register</button>
+  </div>
+</div>

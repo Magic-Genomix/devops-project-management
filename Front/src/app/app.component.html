@@ -1,0 +1,85 @@
+<header *ngIf="isNav()">
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+      <div class="navbar-logo">
+        <a routerLink="/">
+          <img src="../assets/image.png" alt="EventFlow Logo" class="navbar-brand-img">
+        </a>
+      </div>
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item-1" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <a class="nav-link" routerLink="/login">
+              <i class="fas fa-sign-in-alt"></i>
+              <span class="ms-1">Login</span>
+            </a>
+          </li>
+          <li class="nav-item-1" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <a class="nav-link" routerLink="/registration">
+              <i class="fas fa-user-plus"></i>
+              <span class="ms-1">Register</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<router-outlet></router-outlet>
+
+<footer *ngIf="isNav()" class="text-light py-5" id="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+        <h2 class="h5 mb-4">Join Us</h2>
+        <div class="footer-social d-flex gap-3 mb-3">
+          <a href="/aaa" class="text-light">
+            <i class="fab fa-linkedin fa-lg"></i>
+          </a>
+          <a href="/vvv" class="text-light">
+            <i class="fab fa-twitter fa-lg"></i>
+          </a>
+          <a href="ddddd" class="text-light">
+            <i class="fab fa-instagram fa-lg"></i>
+          </a>
+          <a href="eee" class="text-light">
+            <i class="fab fa-whatsapp fa-lg"></i>
+          </a>
+        </div>
+        <p class="mb-0">&copy; 2025 EventFlow. All rights reserved.</p>
+      </div>
+
+      <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+        <h2 class="h5 mb-4">Pages</h2>
+        <ul class="list-unstyled">
+          <li class="mb-2"><a href="/" class="text-light text-decoration-none">Home</a></li>
+          <li class="mb-2"><a href="/login" class="text-light text-decoration-none">Login</a></li>
+          <li class="mb-2"><a href="/registration" class="text-light text-decoration-none">Registration</a></li>
+
+        </ul>
+      </div>
+
+      <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+        <h2 class="h5 mb-4">Contact</h2>
+        <p class="mb-2">
+          <i class="fas fa-envelope me-2"></i>
+          EventFlow&#64;EventFlow.com
+        </p>
+        <p class="mb-2">
+          <i class="fas fa-map-marker me-2"></i>
+          France
+        </p>
+        <p class="mb-0">
+          <i class="fas fa-phone-alt me-2"></i>
+          +33 72983245
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>

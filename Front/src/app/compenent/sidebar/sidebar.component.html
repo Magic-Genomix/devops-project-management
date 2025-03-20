@@ -1,0 +1,10 @@
+<aside class="sidebar">
+    <ul>
+       <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><a routerLink="/dashboard">Dashboard</a></li>
+       <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><a routerLink="/events">Events</a></li>
+       <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><a routerLink="/create-event">Create Event</a></li>
+       <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><a routerLink="/my-event">My Event</a></li>
+
+       <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><button (click)="logout()">Déconnexion</button>       </li>
+    </ul>
+  </aside>

@@ -1,0 +1,67 @@
+<section class="auth-section">
+  <div class="container">
+    <div class="auth-card">
+      <div class="auth-card__header">
+        <h2 class="auth-card__title">Inscription</h2>
+        <p class="auth-card__subtitle">Créez votre compte gratuitement</p>
+      </div>
+
+      <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="auth-form">
+        <div class="form-group">
+          <label for="name" class="form-label">Nom complet</label>
+          <div class="input-wrapper">
+            <i class="fas fa-user input-icon"></i>
+            <input 
+              type="text" 
+              id="name" 
+              formControlName="name" 
+              class="form-input"
+              placeholder="Entrez votre nom">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email" class="form-label">Email</label>
+          <div class="input-wrapper">
+            <i class="fas fa-envelope input-icon"></i>
+            <input 
+              type="email" 
+              id="email" 
+              formControlName="email" 
+              class="form-input"
+              (input)="convertEmailToLowerCase()"
+              placeholder="Entrez votre email">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password" class="form-label">Mot de passe</label>
+          <div class="input-wrapper">
+            <i class="fas fa-lock input-icon"></i>
+            <div *ngIf="userForm.get('password')?.hasError('weakPassword') && userForm.get('password')?.touched" class="error">
+              Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.
+            </div>
+            
+            <input 
+              type="password" 
+              id="password" 
+              formControlName="password" 
+              class="form-input"
+              placeholder="Créez votre mot de passe">
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn--primary btn--full" [disabled]="userForm.invalid">
+          S'inscrire
+        </button>
+                
+        <div class="auth-links">
+          <p class="auth-text">Vous avez déjà un compte ?</p>
+          <a href="/login" class="btn btn--primary">Se connecter</a>
+
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+

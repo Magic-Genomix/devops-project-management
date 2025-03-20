@@ -1,0 +1,28 @@
+<app-sidebar></app-sidebar>
+
+<div class="event-list">
+  <h2>My Events</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Date</th>
+        <th>Location</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let event of events">
+        <td>{{ event.title }}</td>
+        <td>{{ event.description }}</td>
+        <td>{{ event.date }}</td>
+        <td>{{ event.location }}</td>
+        <td>
+          <button (click)="editEvent(event.id)">Edit</button>
+          <button (click)="deleteEvent(event.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

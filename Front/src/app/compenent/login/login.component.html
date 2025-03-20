@@ -1,0 +1,45 @@
+<section class="auth-section">
+  <div class="container">
+    <div class="auth-card">
+      <div class="auth-card__header">
+        <h2 class="auth-card__title">Connexion</h2>
+        <p class="auth-card__subtitle">Accédez à votre compte</p>
+      </div>
+
+      <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="auth-form">
+        <div class="form-group">
+          <label for="username" class="form-label">Nom d'utilisateur</label>
+          <div class="input-wrapper">
+            <i class="fas fa-user input-icon"></i>
+            <input 
+              type="text" 
+              id="username" 
+              formControlName="username" 
+              class="form-input"
+              (input)="convertEmailToLowerCase()"
+              placeholder="Entrez votre nom d'utilisateur">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password" class="form-label">Mot de passe</label>
+          <div class="input-wrapper">
+            <i class="fas fa-lock input-icon"></i>
+            <input 
+              type="password" 
+              id="password" 
+              formControlName="password" 
+              class="form-input"
+              placeholder="Entrez votre mot de passe">
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn--primary btn--full">Se connecter</button>
+        
+        <div class="auth-links">
+          <a href="/registration" class="btn btn--primary">Créer un compte</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

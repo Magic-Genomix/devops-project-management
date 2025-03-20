@@ -1,0 +1,126 @@
+// Variables
+$sidebar-bg: #2c3e50;
+$sidebar-active: #34495e;
+$sidebar-text: #ffffff;
+$primary-blue: #3498db;
+$danger-red: #e74c3c;
+$border-color: #eaeaea;
+
+
+// Sidebar
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background-color: $sidebar-bg;
+  position: fixed;
+  left: 0;
+  top: 0;
+  color: $sidebar-text;
+  padding-top: 2rem;
+
+  a {
+    display: block;
+    padding: 1rem 2rem;
+    color: $sidebar-text;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+
+    &:hover, &.active {
+      background-color: $sidebar-active;
+    }
+  }
+}
+button {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &[type="submit"] {
+    background-color: $primary-blue;
+    color: $primary-blue;
+
+    &:hover:not(:disabled) {
+      background-color: darken($primary-blue, 10%);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+
+  &[type="button"] {
+    background-color: $sidebar-bg;
+    color: $primary-blue;
+
+    &:hover {
+      background-color: darken($sidebar-bg, 10%);
+    }
+  }
+}
+// Main content
+.event-list {
+  margin-left: 250px;
+  padding: 2rem;
+
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: $sidebar-bg;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    th {
+      background-color: $sidebar-bg;
+      color: white;
+      text-align: left;
+      padding: 1rem;
+      font-weight: 500;
+    }
+
+    td {
+      padding: 1rem;
+      border-bottom: 1px solid $border-color;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .actions {
+      display: flex;
+      gap: 0.5rem;
+
+ 
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+
+  .event-list {
+    margin-left: 0;
+    padding: 1rem;
+    
+    table {
+      display: block;
+      overflow-x: auto;
+    }
+  }
+}
+

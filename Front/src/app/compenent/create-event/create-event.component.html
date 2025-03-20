@@ -1,0 +1,26 @@
+<app-sidebar></app-sidebar>
+
+<div class="event-form">
+    <h2>Create Event</h2>
+    <form [formGroup]="eventForm" (ngSubmit)="createEvent()">
+      <label for="title">Title</label>
+      <input id="title" formControlName="title" />
+  
+      <label for="description">Description</label>
+      <textarea id="description" formControlName="description"></textarea>
+  
+      <label for="date">Date
+        <div *ngIf="eventForm.get('date')?.hasError('invalidDate') && eventForm.get('date')?.touched" class="error">
+          The event date must be today or later.
+        </div>
+        
+      </label>
+      <input type="date" id="date" formControlName="date"  />
+  
+      <label for="location">Location</label>
+      <input id="location" formControlName="location" />
+  
+      <button type="submit" [disabled]="eventForm.invalid">Create Event</button>
+    </form>
+  </div>
+  

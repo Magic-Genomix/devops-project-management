@@ -1,0 +1,22 @@
+<app-sidebar></app-sidebar>
+
+<div class="dashboard">
+  <h2>Bienvenue ! 👋</h2>
+
+  <div class="dashboard-card">
+    <h3>📅 Événement le plus proche</h3>
+    <p *ngIf="closestEvent; else noEvent">
+      <strong>{{ closestEvent.title }}</strong><br>
+      📍 {{ closestEvent.location }}<br>
+      🗓️ {{ closestEvent.date }}
+    </p>
+    <ng-template #noEvent>
+      <p>Aucun événement à venir.</p>
+    </ng-template>
+  </div>
+
+  <div class="dashboard-card">
+    <h3>📊 Nombre d'événements créés</h3>
+    <p>{{ createdEventsCount }}</p>
+  </div>
+</div>
