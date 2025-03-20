@@ -27,9 +27,10 @@ export class EditEventComponent implements OnInit {
     this.eventForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
-      date: ['', Validators.required, this.dateValidator],
+      date: ['', [Validators.required, this.dateValidator]], 
       location: ['', Validators.required]
     });
+    
   }
 
   ngOnInit(): void {
@@ -51,6 +52,7 @@ export class EditEventComponent implements OnInit {
   
     return selectedDate >= today ? null : { invalidDate: true };
   }
+
   loadEventDetails(): void {
     this.eventService.getEventById(this.eventId).subscribe((event: Event) => {
       this.eventForm.patchValue({
