@@ -1,4 +1,4 @@
-name: CI Workflow for Event Management App
+name: Simple CI Workflow for Event Management App
 
 on:
   push:
@@ -22,6 +22,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '21'
+          distribution: 'adoptopenjdk'  # Add distribution here (other options: 'zulu', 'corretto')
 
       # Step 3: Build and test Spring Boot backend using Maven
       - name: Build and test Spring Boot backend
