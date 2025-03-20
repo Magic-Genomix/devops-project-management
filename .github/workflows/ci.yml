@@ -22,7 +22,6 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '17'        # Set Java version to 17
-          distribution: 'adoptium'  # Use Adoptium as the JDK distribution
 
       # Step 3: Build and test Spring Boot backend using Maven
       - name: Build and test Spring Boot backend
@@ -31,7 +30,6 @@ jobs:
   # Job 2: Frontend - Build and Test Angular Application
   frontend:
     runs-on: ubuntu-latest
-    needs: backend  # Ensure frontend only runs after backend job is successful
     steps:
       # Step 1: Checkout the code
       - name: Checkout code
