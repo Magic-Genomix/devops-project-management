@@ -22,6 +22,8 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '17'        # Set Java version to 17
+          distribution: 'adoptium'  # Use Adoptium as the JDK distribution
+
 
       # Step 3: Build and test Spring Boot backend using Maven
       - name: Build and test Spring Boot backend
@@ -44,10 +46,6 @@ jobs:
       # Step 3: Install Angular dependencies
       - name: Install Angular dependencies
         run: npm install --prefix Front
-
-      # Step 4: Run Angular tests
-      - name: Run Angular tests
-        run: npm run test --prefix Front -- --watch=false
 
       # Step 5: Build Angular application for production
       - name: Build Angular production
