@@ -13,19 +13,6 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>app</name>
 	<description>eventmanager</description>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
 	<properties>
 		<java.version>21</java.version>
 	</properties>
@@ -93,28 +80,41 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
+			<!-- Spring Boot Maven Plugin to build the fat JAR -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>3.4.2</version>
+			</plugin>
+
+			<!-- Maven Jar Plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.0.0-M5</version>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.1.0</version>
 				<configuration>
-					<forkCount>1</forkCount> <!-- Number of parallel test executions -->
-					<reuseForks>false</reuseForks> <!-- Do not reuse forks -->
-					<timeout>60000</timeout> <!-- Timeout in ms -->
-					<testFailureIgnore>false</testFailureIgnore> <!-- Fail the build if tests fail -->
+					<archive>
+						<manifestEntries>
+							<Main-Class>eventmanager.app.AppApplication</Main-Class>
+						</manifestEntries>
+					</archive>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-
-
 </project>

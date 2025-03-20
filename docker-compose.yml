@@ -1,0 +1,46 @@
+
+services:
+  event-db:
+    image: postgres:13-alpine
+    container_name: event-db
+    environment:
+      POSTGRES_DB: event_manager_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+    volumes:
+      - event_db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - event-network
+
+  event-backend:
+    build:
+      context: ./Back
+    container_name: event-backend
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - event-db
+    ports:
+      - "8080:8080"
+    networks:
+      - event-network
+
+  event-frontend:
+    build:
+      context: ./Front
+    container_name: event-frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - event-backend
+    networks:
+      - event-network
+
+volumes:
+  event_db_data:
+
+networks:
+  event-network:
+    driver: bridge
