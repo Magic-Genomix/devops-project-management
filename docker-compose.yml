@@ -11,8 +11,7 @@ services:
       - event_db_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-    networks:
-      - event-network
+
 
   event-backend:
     build:
@@ -24,8 +23,7 @@ services:
       - event-db
     ports:
       - "8080:8080"
-    networks:
-      - event-network
+
 
   event-frontend:
     build:
@@ -35,12 +33,7 @@ services:
       - "4200:80"
     depends_on:
       - event-backend
-    networks:
-      - event-network
+
 
 volumes:
   event_db_data:
-
-networks:
-  event-network:
-    driver: bridge
