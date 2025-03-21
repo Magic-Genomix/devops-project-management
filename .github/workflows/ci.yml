@@ -123,3 +123,34 @@ jobs:
       - name: Start services with Docker Compose
         run: |
           docker-compose -f docker-compose.yml up -d
+
+  # Job 5: Selenium Test Job
+  selenium-test:
+    runs-on: ubuntu-latest
+    needs: dockerize
+    services:
+      selenium:
+        image: selenium/standalone-chrome:latest
+        ports:
+          - 4444:4444
+        options: --health-cmd "curl --silent --fail http://localhost:4444/wd/hub/status" --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 2: Set up Node.js and install dependencies for Selenium WebDriver
+      - name: Set up Node.js 20.19.0
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20.19.0'
+      
+      - name: Install dependencies
+        run: |
+          npm install selenium-webdriver --prefix Front  # Assuming you're using selenium-webdriver package in your test.js
+
+      # Step 3: Run Selenium Test
+      - name: Run Selenium Test for Frontend
+        run: |
+          # Exécution du test Selenium en utilisant Node.js
+          node Front/test.js  # Votre script Selenium est dans 'Front/test.js'
