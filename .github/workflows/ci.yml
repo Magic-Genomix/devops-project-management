@@ -1,9 +1,9 @@
 name: CI/CD Workflow for Event Management App
 
 on:
-  push:
-    branches:
-      - main
+  #push:
+   # branches:
+    #  - main
   pull_request:
     branches:
       - main
@@ -139,17 +139,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Step 2: Set up Node.js and install dependencies for Selenium WebDriver
       - name: Set up Node.js 20.19.0
         uses: actions/setup-node@v2
         with:
           node-version: '20.19.0'
-      
+
       - name: Install dependencies
         run: |
-          npm install selenium-webdriver --prefix Front  # Assuming you're using selenium-webdriver package in your test.js
+          npm install selenium-webdriver --prefix Front
 
-      # Step 3: Run Selenium Test
+      - name: Wait for Frontend to be ready
+        run: |
+          # Attendez que le frontend soit disponible avant d'exécuter les tests
+          until curl -s http://localhost:4200 > /dev/null; do
+            echo "Waiting for frontend to be ready...";
+            sleep 5;
+          done
+          echo "Frontend is ready!"
+
       - name: Run Selenium Test for Frontend
         run: |
           # Exécution du test Selenium en utilisant Node.js
