@@ -151,7 +151,7 @@ jobs:
       - name: Wait for Frontend to be ready
         run: |
           # Attendez que le frontend soit disponible avant d'exécuter les tests
-          until curl -s http://localhost:4200 > /dev/null; do
+          until curl -s http://event-frontend:4200 > /dev/null; do
             echo "Waiting for frontend to be ready...";
             sleep 5;
           done
