@@ -66,11 +66,20 @@ public class EventControllerTest {
         event.setLocation("Test Location");
         event.setCreatorEmail("testuser@example.com");
         jwtService = new JwtService();
+
     }
 
 
+    @Test
+    void testAddNewUser() throws Exception {
+        when(userService.addUser(any(User.class))).thenReturn("User Added Successfully");
 
-
+        mockMvc.perform(post("/auth/addNewUser")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\":\"testuser@example.com\",\"password\":\"newpassword\",\"name\":\"New User\"}"))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.message").value("User Added Successfully"));
+    }
     @Test
     void testCreateEvent() throws Exception {
         String userName = "testuser@example.com";

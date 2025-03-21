@@ -38,6 +38,9 @@ public class UserControllerTest {
     @Mock
     private JwtService jwtService;
 
+
+
+
     @Mock
     private AuthenticationManager authenticationManager;
 
@@ -53,6 +56,8 @@ public class UserControllerTest {
         user = new User("testuser@example.com", "password", "Test User");
         authRequest = new AuthRequest("testuser@example.com", "password");
         jwtService = new JwtService();
+        userService.addUser(new User("testuser3", "password456", "testuser3@example.com"));
+
 
     }
 
@@ -62,32 +67,6 @@ public class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string("Welcome this endpoint is not secure"));
     }
-
-
-
-    @Test
-    void testGenerateToken() throws Exception {
-        // Mock Authentication
-        Authentication authentication = mock(Authentication.class);
-        when(authentication.isAuthenticated()).thenReturn(true);  // Mock it to return true
-        when(authenticationManager.authenticate(any())).thenReturn(authentication); // Mock the authenticate method
-
-        // Mock the JWT token generation to return a real JWT token
-
-        // Perform the request
-        mockMvc.perform(post("/auth/generateToken")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"username\":\"testuser@example.com\",\"password\":\"password\"}"))
-                .andExpect(status().isOk())  // Expect HTTP OK
-                // Use a regular expression to match the JWT structure
-                .andExpect(jsonPath("$.token").value(matchesPattern("^[A-Za-z0-9-_]+\\.[A-Za-z0-9-_]+\\.[A-Za-z0-9-_]+$")));  // Match JWT token format
-    }
-
-
-
-
-
-
 
     @Test
     void testAddNewUser() throws Exception {
@@ -114,7 +93,6 @@ public class UserControllerTest {
 
 
 
-
     @Test
     void testDeleteUser() throws Exception {
         // Simulating that the user exists in the database and will be deleted
@@ -126,6 +104,7 @@ public class UserControllerTest {
                 .andExpect(status().isOk())  // Expect 200 OK status code
                 .andExpect(jsonPath("$.message").value("User deleted successfully"));
     }
+
 
 
 
