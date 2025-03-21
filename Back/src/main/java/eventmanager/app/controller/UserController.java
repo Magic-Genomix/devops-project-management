@@ -58,6 +58,9 @@ public class UserController {
 
 
 
+
+
+
     @PostMapping("/addNewUser")
     public ResponseEntity<String> addNewUser(@RequestBody User user) {
         String response = service.addUser(user);
@@ -66,6 +69,16 @@ public class UserController {
         }
         return new ResponseEntity<>("{\"message\": \"" + response + "\"}", HttpStatus.CREATED);
     }
+
+    @DeleteMapping("/deleteUser/{email}")
+    public ResponseEntity<String> deleteUser(@PathVariable String email) {
+        String response = service.deleteUser(email);
+        if (response.equals("User not found")) {
+            return new ResponseEntity<>("{\"message\": \"" + response + "\"}", HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>("{\"message\": \"" + response + "\"}", HttpStatus.OK);
+    }
+
     @GetMapping("/user/verifyToken")
     public boolean userProfile() {
         return true;

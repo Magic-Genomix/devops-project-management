@@ -42,6 +42,17 @@ public class UserService implements UserDetailsService {
         return "User Added Successfully";
     }
 
+    public String deleteUser(String email) {
+        Optional<User> user = repository.findByEmail(email);
+        if (user.isPresent()) {
+            repository.delete(user.get());
+            return "User deleted successfully";
+        } else {
+            return "User not found";
+        }
+    }
+
+
 
     public List<User> getAllUsers() {
         return repository.findAll();
