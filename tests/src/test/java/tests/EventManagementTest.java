@@ -25,7 +25,7 @@ public class EventManagementTest {
 
     private WebDriver driver;
     private WebDriverWait wait;
-
+ /* 
     // Initialisation du WebDriver et WebDriverWait
     @BeforeEach
     public void setUp() {
@@ -35,8 +35,8 @@ public class EventManagementTest {
         driver = new ChromeDriver(options);
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
-
-     /*    // Initialisation du WebDriver et WebDriverWait
+*/
+       // Initialisation du WebDriver et WebDriverWait
         @BeforeEach
         public void setUp() throws Exception {
             ChromeOptions options = new ChromeOptions();
@@ -49,7 +49,7 @@ public class EventManagementTest {
             URL seleniumHubUrl = new URL("http://selenium-hub:4444/wd/hub"); // Utilisez l'URL de votre Selenium Hub
             driver = new RemoteWebDriver(seleniumHubUrl, options); // Utiliser RemoteWebDriver au lieu de ChromeDriver
             wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        }*/
+        }
 
     // Fermer le navigateur après le test
     @AfterEach
