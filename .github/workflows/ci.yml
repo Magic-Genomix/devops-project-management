@@ -115,7 +115,6 @@ jobs:
           echo "Host: $HOSTNAME"
 
   # Job 5: Selenium - Run Selenium Tests
-  # Job 5: Selenium - Run Selenium Tests
   selenium-test:
     runs-on: ubuntu-latest
     needs: dockerize  # Ensure the Docker services are running before running Selenium tests
@@ -136,10 +135,10 @@ jobs:
         with:
           java-version: '21'
           distribution: 'zulu'
-          
+
       - name: Install Selenium dependencies
         run: |
-          mvn install -f Front/tests/pom.xml 
+          mvn install -f tests/pom.xml 
 
       - name: Wait for Selenium Hub to be ready
         run: |
@@ -151,5 +150,5 @@ jobs:
 
       - name: Run Selenium Tests
         run: |
-          mvn test -f Front/tests/pom.xml
+          mvn test -f tests/pom.xml
 
