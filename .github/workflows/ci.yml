@@ -146,9 +146,20 @@ jobs:
 
       - name: Install dependencies
         run: |
+          npm install --prefix Front
           npm install selenium-webdriver --prefix Front
+
+      - name: Install ChromeDriver
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y chromium-chromedriver
+          sudo ln -s /usr/lib/chromium-browser/chromedriver /usr/bin/chromedriver
 
       - name: Run Selenium Test for Frontend
         run: |
-          # Exécution du test Selenium en utilisant Node.js
-          node Front/test.js  # Votre script Selenium est dans 'Front/test.js'
+          # Run the Selenium tests
+          node Front/test.js  # Your script Selenium is in 'Front/test.js'
+
+      - name: Wait for Selenium test to complete
+        run: |
+          sleep 10 # Wait for a while to ensure the tests complete

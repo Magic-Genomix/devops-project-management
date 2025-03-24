@@ -2,7 +2,11 @@ const { Builder, By, until } = require('selenium-webdriver');
 require('chromedriver');
 
 (async function createEventTest() {
-let driver = new Builder().forBrowser('chrome').usingServer('http://localhost:4444/wd/hub').build();
+//let driver = new Builder().forBrowser('chrome').usingServer('http://localhost:4444/wd/hub').build();
+let driver = await new Builder()
+  .forBrowser('chrome')
+  .usingServer('http://localhost:4444/wd/hub') // Pointing to the Selenium Hub
+  .build();
 
   try {
     // Étape 1: Ouvrir la page principale (localhost:4200)

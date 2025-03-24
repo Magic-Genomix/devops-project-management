@@ -92,7 +92,6 @@ public class EventController {
         if (userDetails == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-
         String email = userDetails.getUsername();
         List<Long> eventIds = service.getRegistredEventIds(email);
         return new ResponseEntity<>(eventIds, HttpStatus.OK);
