@@ -8,22 +8,35 @@ import org.junit.jupiter.api.*;
 
 import java.time.Duration;
 
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.NoAlertPresentException;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import java.net.URL;  // Ajoutez cet import pour la classe URL
+import java.time.Duration;
+
 public class EventManagementTest {
 
     private WebDriver driver;
     private WebDriverWait wait;
 
     // Initialisation du WebDriver et WebDriverWait
-   /*  @BeforeEach
+    @BeforeEach
     public void setUp() {
         System.setProperty("webdriver.chrome.driver", "C:\\Users\\kathl\\Downloads\\chromedriver-win64\\chromedriver.exe");
         ChromeOptions options = new ChromeOptions();
         //options.addArguments("--headless"); // Exécuter en mode headless (optionnel)
         driver = new ChromeDriver(options);
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-    }*/
+    }
 
-        // Initialisation du WebDriver et WebDriverWait
+     /*    // Initialisation du WebDriver et WebDriverWait
         @BeforeEach
         public void setUp() throws Exception {
             ChromeOptions options = new ChromeOptions();
@@ -36,7 +49,7 @@ public class EventManagementTest {
             URL seleniumHubUrl = new URL("http://selenium-hub:4444/wd/hub"); // Utilisez l'URL de votre Selenium Hub
             driver = new RemoteWebDriver(seleniumHubUrl, options); // Utiliser RemoteWebDriver au lieu de ChromeDriver
             wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        }
+        }*/
 
     // Fermer le navigateur après le test
     @AfterEach
