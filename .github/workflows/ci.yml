@@ -124,6 +124,13 @@ jobs:
         run: |
           docker-compose -f docker-compose.yml up -d
 
+      # Step 6: Display the hostname of the frontend container
+      - name: Display the hostname of the frontend container
+        run: |
+          FRONTEND_CONTAINER=$(docker ps -qf "name=event-frontend")
+          HOSTNAME=$(docker exec $FRONTEND_CONTAINER hostname)
+          echo "Host: $HOSTNAME"
+
   # Job 5: Selenium Test Job
   selenium-test:
     runs-on: ubuntu-latest
