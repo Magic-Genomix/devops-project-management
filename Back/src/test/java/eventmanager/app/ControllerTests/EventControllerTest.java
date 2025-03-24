@@ -91,7 +91,7 @@ public class EventControllerTest {
 
         mockMvc.perform(post("/api/events/create")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{ \"title\": \"Test Event\", \"description\": \"Test Description\", \"date\": \"2025-03-21\", \"location\": \"Test Location\" }")
+                        .content("{ \"title\": \"Test Event\", \"description\": \"Test Description\", \"date\": \"2026-03-21\", \"location\": \"Test Location\" }")
                         .header("Authorization", "Bearer " + token))  // Pass the token in the header
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.title").value("Test Event"))
