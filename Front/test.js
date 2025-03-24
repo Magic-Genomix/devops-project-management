@@ -10,8 +10,8 @@ require('chromedriver');
 
   try {
     // Étape 1: Ouvrir la page principale (localhost:4200)
-    //await driver.get('http://localhost:4200');
-    await driver.get('http://event-frontend:4200');  // URL correcte dans le contexte Docker
+    await driver.get('http://localhost:4200');
+    //await driver.get('http://event-frontend:4200');  // URL correcte dans le contexte Docker
 
     
     console.log("Page d'accueil ouverte...");
