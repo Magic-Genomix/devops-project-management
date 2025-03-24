@@ -14,14 +14,29 @@ public class EventManagementTest {
     private WebDriverWait wait;
 
     // Initialisation du WebDriver et WebDriverWait
-    @BeforeEach
+   /*  @BeforeEach
     public void setUp() {
         System.setProperty("webdriver.chrome.driver", "C:\\Users\\kathl\\Downloads\\chromedriver-win64\\chromedriver.exe");
         ChromeOptions options = new ChromeOptions();
         //options.addArguments("--headless"); // Exécuter en mode headless (optionnel)
         driver = new ChromeDriver(options);
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-    }
+    }*/
+
+        // Initialisation du WebDriver et WebDriverWait
+        @BeforeEach
+        public void setUp() throws Exception {
+            ChromeOptions options = new ChromeOptions();
+            options.addArguments("--headless"); // Exécuter en mode headless
+            options.addArguments("--disable-gpu"); // Désactive l'accélération GPU (utile pour le mode headless)
+            options.addArguments("--no-sandbox"); // Permet d'exécuter dans un environnement sécurisé
+            options.addArguments("--window-size=1920x1080"); // Définir une taille de fenêtre (utile pour les tests)
+    
+            // Connexion au Selenium Hub Docker
+            URL seleniumHubUrl = new URL("http://selenium-hub:4444/wd/hub"); // Utilisez l'URL de votre Selenium Hub
+            driver = new RemoteWebDriver(seleniumHubUrl, options); // Utiliser RemoteWebDriver au lieu de ChromeDriver
+            wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        }
 
     // Fermer le navigateur après le test
     @AfterEach
