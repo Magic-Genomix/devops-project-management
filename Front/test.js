@@ -4,7 +4,6 @@ const chrome = require('selenium-webdriver/chrome');
 
 let options = new chrome.Options();
 
-options.addArguments(`--user-data-dir=${userDataDir}`);  // Spécifier un répertoire unique pour chaque session
 options.addArguments('--headless');  // Exécuter en mode headless (sans interface graphique)
 options.addArguments('--no-sandbox');  // Peut être nécessaire dans certains environnements CI/CD
 options.addArguments('--disable-dev-shm-usage');  // Aide à éviter les problèmes de mémoire dans les environnements limités
