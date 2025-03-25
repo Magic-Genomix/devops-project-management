@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-registration',
@@ -55,7 +56,9 @@ export class RegistrationComponent implements OnInit {
           'Content-Type': 'application/json'
         })
       };
-      this.http.post<any>('http://localhost:8080/auth/addNewUser', this.userForm.value,httpOptions).subscribe(
+      const url = `${environment.BACK_API}/auth/addNewUser`;
+      
+      this.http.post<any>(url, this.userForm.value,httpOptions).subscribe(
         response => {
           console.log('User added successfully:', response);
           alert('User added successfully');

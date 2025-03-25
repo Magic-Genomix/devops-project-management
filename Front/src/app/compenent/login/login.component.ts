@@ -7,7 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../../services/auth/auth.service';
-
+import { environment } from '../../../environments/environment.development';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -47,7 +47,9 @@ export class LoginComponent  {
           'Content-Type': 'application/json'
         })
       };
-      this.http.post<any>('http://localhost:8080/auth/generateToken', this.userForm.value,httpOptions).subscribe(
+      const url = `${environment.BACK_API}/auth/generateToken`;
+
+      this.http.post<any>(url, this.userForm.value,httpOptions).subscribe(
         response => {
           console.log('User authenticated successfully:', response);
           this.auth.saveToken(response.token);

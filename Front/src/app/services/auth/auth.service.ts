@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment.development';  // Import environment
 
 
 @Injectable({
@@ -8,6 +9,8 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
 
+
+  
   constructor(private http: HttpClient,private router: Router) { }
   saveToken(token: string): void {
     localStorage.setItem('token', token);
@@ -33,8 +36,10 @@ export class AuthService {
         })
       };
       console.log(`Bearer ${token}`);
+      const url = `${environment.BACK_API}/auth/user/verifyToken`;
+
       // Verification de jeton
-      this.http.get<any>('http://localhost:8080/auth/user/verifyToken', httpOptions).subscribe(
+      this.http.get<any>(url, httpOptions).subscribe(
         response => {
           console.log('User authenticated successfully:', response);
           resolve(true); 

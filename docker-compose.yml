@@ -13,7 +13,6 @@ services:
     networks:
       - event-network
 
-
   event-backend:
     build:
       context: ./Back
@@ -26,6 +25,8 @@ services:
       - "8080:8080"
     networks:
       - event-network
+    command: >
+      /bin/sh -c "mvn clean install && mvn test && java -jar target/your-app.jar"  # Commande pour build et test
 
 
   event-frontend:
@@ -45,19 +46,28 @@ services:
     networks:
       - event-network
 
+
+
+
   selenium-hub:
     image: selenium/standalone-chrome
     container_name: selenium-hub
+    environment:
+      - HUB_HOST=selenium-hub
+      - SCREEN_WIDTH=2560
+      - SCREEN_HEIGHT=1440
+      - VNC_PASSWORD=pass123 # Add VNC password
+      
+
     ports:
       - "4444:4444"
     networks:
       - event-network
-      
+
 
 networks:
   event-network:
     driver: bridge
-      
 
 volumes:
   event_db_data:

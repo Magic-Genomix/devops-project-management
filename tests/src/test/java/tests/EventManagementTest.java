@@ -6,6 +6,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.junit.jupiter.api.*;
 
+import java.net.MalformedURLException;
 import java.time.Duration;
 
 import org.openqa.selenium.WebDriver;
@@ -25,31 +26,40 @@ public class EventManagementTest {
 
     private WebDriver driver;
     private WebDriverWait wait;
- /* 
+
     // Initialisation du WebDriver et WebDriverWait
-    @BeforeEach
+   /* @BeforeEach
     public void setUp() {
         System.setProperty("webdriver.chrome.driver", "C:\\Users\\kathl\\Downloads\\chromedriver-win64\\chromedriver.exe");
         ChromeOptions options = new ChromeOptions();
         //options.addArguments("--headless"); // Exécuter en mode headless (optionnel)
         driver = new ChromeDriver(options);
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-    }
-*/
-       // Initialisation du WebDriver et WebDriverWait
-        @BeforeEach
-        public void setUp() throws Exception {
-            ChromeOptions options = new ChromeOptions();
-            options.addArguments("--headless"); // Exécuter en mode headless
-            options.addArguments("--disable-gpu"); // Désactive l'accélération GPU (utile pour le mode headless)
-            options.addArguments("--no-sandbox"); // Permet d'exécuter dans un environnement sécurisé
-            options.addArguments("--window-size=1920x1080"); // Définir une taille de fenêtre (utile pour les tests)
-    
-            // Connexion au Selenium Hub Docker
-            URL seleniumHubUrl = new URL("http://selenium-hub:4444/wd/hub"); // Utilisez l'URL de votre Selenium Hub
-            driver = new RemoteWebDriver(seleniumHubUrl, options); // Utiliser RemoteWebDriver au lieu de ChromeDriver
-            wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        }
+    } */
+
+          // Initialisation du WebDriver et WebDriverWait
+          @BeforeEach
+          public void setUp() throws MalformedURLException {
+              ChromeOptions options = new ChromeOptions();
+              // Temporarily remove options
+              // options.addArguments("--disable-gpu");
+              // options.addArguments("--no-sandbox");
+              // options.addArguments("--window-size=1920x1080");
+              //options.addArguments("--headless");
+              URL seleniumHubUrl = new URL("http://localhost:4444/wd/hub"); // or http://selenium-hub:4444/wd/hub
+
+              DesiredCapabilities capabilities = new DesiredCapabilities();
+              capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+
+              driver = new RemoteWebDriver(seleniumHubUrl, capabilities);
+
+              // Increase timeouts
+              driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+              driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(60));
+              driver.manage().timeouts().scriptTimeout(Duration.ofSeconds(60));
+
+              wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+          }
 
     // Fermer le navigateur après le test
     @AfterEach
@@ -61,8 +71,14 @@ public class EventManagementTest {
 
     // Étape 1: Ouvrir la page principale
     public void openHomePage() {
-        driver.get("http://localhost:4200");
+        //driver.get("http://localhost:4200");
+        driver.get("localhost:4444/event-frontend/");
         System.out.println("Page d'accueil ouverte...");
+        try {
+            Thread.sleep(1500); // Attendre un peu après le scroll
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // Étape 2: Se connecter à l'application
@@ -79,6 +95,30 @@ public class EventManagementTest {
         driver.findElement(By.cssSelector("button[type='submit']")).click();
         System.out.println("Formulaire soumis...");
         handleAlert();
+    }
+
+    // Étape 2: Se connecter à l'application
+    public void OpenLogin() {
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[routerLink='/login']"))).click();
+        System.out.println("Clique sur le lien Login...");
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".auth-form")));
+        try {
+            Thread.sleep(1500); // Attendre un peu après le scroll
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Étape 2: Se connecter à l'application
+    public void OpenRegister() {
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[routerLink='/registration']"))).click();
+        System.out.println("Clique sur le lien Login...");
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".auth-form")));
+        try {
+            Thread.sleep(1500); // Attendre un peu après le scroll
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // Gérer les alertes
@@ -162,12 +202,33 @@ public class EventManagementTest {
         System.out.println("Clique sur le lien 'Dash Event'...");
     }
 
+    // Test de base pour ouvrir une page et interagir avec un bouton
+    @Test
+    public void testOpenPageAndClickButton() {
+        // Ouvrir une page de test
+        driver.get("localhost:4444/event-frontend/");
+        System.out.println("Page ouverte...");
+        openHomePage();
+        OpenRegister();
+
+        // Attendre que le bouton soit cliquable
+        //WebElement button = wait.until(ExpectedConditions.elementToBeClickable(By.id("someButton")));
+        //button.click();
+        //System.out.println("Bouton cliqué...");
+
+        // Vérification d'un message de confirmation après l'action
+        //WebElement confirmationMessage = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("confirmationMessage")));
+        //System.out.println("Message de confirmation trouvé: " + confirmationMessage.getText());
+    }
+
     // Test de gestion d'événements
     @Test
-    public void testEventManagement() {
+    public void testEventManagement() throws MalformedURLException {
         setUp();
         try {
             openHomePage();
+            OpenRegister();
+            OpenLogin();
             login("testuser@example.com", "newpassword");
             createEvent("Mon événement test", "Ceci est un test pour créer un événement.", "21/03/2026", "Paris, France");
             editEvent("Update");

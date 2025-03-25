@@ -2,20 +2,23 @@ const { Builder, By, until } = require('selenium-webdriver');
 require('chromedriver');
 
 (async function createEventTest() {
-  let driver = await new Builder().forBrowser('chrome').build();
-  /*let driver = await new Builder()
+
+
+
+  /*let driver = await new Builder().forBrowser('chrome').build();*/
+  let driver = await new Builder()
   .forBrowser('chrome')
   .usingServer('http://localhost:4444/wd/hub') // Pointing to the Selenium Hub
-  .build();*/
+  .build();
 
   try {
     // Étape 1: Ouvrir la page principale (localhost:4200)
-    await driver.get('http://localhost:4200');
-    //await driver.get('http://event-frontend:4200');  // URL correcte dans le contexte Docker
+    //await driver.get('http://localhost:4200');
+    await driver.get('http://event-frontend:80');  // Utiliser le nom du service Docker pour l'URL dans Docker
 
     
     console.log("Page d'accueil ouverte...");
-    await driver.sleep(1500); // Attendre 1.5 secondes avant de passer à l'étape suivante
+    await driver.sleep(3500); // Attendre 1.5 secondes avant de passer à l'étape suivante
 
     // Étape 2: Attendre que le lien Login soit visible et cliquer dessus
     let loginLink = await driver.wait(until.elementLocated(By.css('a[routerLink="/login"]')), 10000);
@@ -31,12 +34,12 @@ require('chromedriver');
 
     // Étape 4: Remplir les champs de login
     let usernameField = await driver.findElement(By.id('username'));
-    await usernameField.sendKeys('testuser@example.com'); // Saisir le nom d'utilisateur
+    await usernameField.sendKeys('user@example.com'); // Saisir le nom d'utilisateur testuser@example.com
     console.log("Nom d'utilisateur saisi...");
     await driver.sleep(1000); // Attendre 1 seconde avant de passer à l'étape suivante
 
     let passwordField = await driver.findElement(By.id('password'));
-    await passwordField.sendKeys('newpassword'); // Saisir le mot de passe
+    await passwordField.sendKeys('user'); // Saisir le mot de passe
     console.log("Mot de passe saisi...");
     await driver.sleep(1000); // Attendre 1 seconde avant de passer à l'étape suivante
 
