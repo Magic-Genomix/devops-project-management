@@ -41,7 +41,7 @@ jobs:
       - name: Run spring
         run: |
           nohup mvn spring-boot:run -f Back/pom.xml &
-          sleep 30
+          sleep 10
       
       - name: Set up Node.js 20.19.0
         uses: actions/setup-node@v2
@@ -54,7 +54,18 @@ jobs:
       - name: Run Angular
         run: |
           nohup npm start --prefix Front &
-          sleep 30
+          sleep 10
+
+      
+      - name: Check if Angular is running
+        run: |
+            sleep 10  # Attendre un peu pour que Angular démarre
+            curl -s http://localhost:4200 
+        
+      - name: Check if Spring Boot is running
+        run: |
+            curl -s http://localhost:8080/auth/welcome 
+        
       - name: Run Selenium Tests
         run: |
           cd Front  # Se déplacer dans le répertoire Front
