@@ -41,6 +41,7 @@ jobs:
       - name: Run spring
         run: |
           nohup mvn spring-boot:run -f Back/pom.xml &
+          sleep 30
       
       - name: Set up Node.js 20.19.0
         uses: actions/setup-node@v2
@@ -50,9 +51,10 @@ jobs:
       - name: Install Angular dependencies
         run: npm install --prefix Front
       
-      - name: Build Angular
-        run: npm start --prefix Front  
-
+      - name: Run Angular
+        run: |
+          nohup npm start --prefix Front &
+          sleep 30
       - name: Run Selenium Tests
         run: |
           cd Front  # Se déplacer dans le répertoire Front
