@@ -3,10 +3,12 @@ require('chromedriver');
 const chrome = require('selenium-webdriver/chrome');
 
 let options = new chrome.Options();
-// Supprimer la configuration de --user-data-dir pour ne pas utiliser de répertoire persistant
-options.addArguments('--no-sandbox'); // Peut être nécessaire pour certains environnements CI/CD
-options.addArguments('--disable-dev-shm-usage'); // Pour éviter les problèmes de mémoire dans des environnements à ressources limitées
+
+options.addArguments(`--user-data-dir=${userDataDir}`);  // Spécifier un répertoire unique pour chaque session
 options.addArguments('--headless');  // Exécuter en mode headless (sans interface graphique)
+options.addArguments('--no-sandbox');  // Peut être nécessaire dans certains environnements CI/CD
+options.addArguments('--disable-dev-shm-usage');  // Aide à éviter les problèmes de mémoire dans les environnements limités
+options.addArguments('--disable-gpu');  // Option recommandée pour les environnements headless
 options.addArguments('--window-size=2560x1440'); // Définir une taille de fenêtre suffisamment grande pour voir l'élément
 
 
