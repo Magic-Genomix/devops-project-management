@@ -18,7 +18,7 @@ require('chromedriver');
 
     
     console.log("Page d'accueil ouverte...");
-    await driver.sleep(3500); // Attendre 1.5 secondes avant de passer à l'étape suivante
+    await driver.sleep(1500); // Attendre 1.5 secondes avant de passer à l'étape suivante
 
     // Étape 2: Attendre que le lien Login soit visible et cliquer dessus
     let loginLink = await driver.wait(until.elementLocated(By.css('a[routerLink="/login"]')), 10000);

@@ -130,23 +130,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
+      - name: Set up Node.js 20.19.0
         uses: actions/setup-node@v2
         with:
-          node-version: '16'  # Utiliser la version de Node.js appropriée
+          node-version: '20.19.0'
 
       - name: Install dependencies
         run: |
           cd Front  # Se déplacer dans le répertoire Front
           npm install  # Installez les dépendances nécessaires pour vos tests Selenium
 
-      - name: Wait for Selenium Hub to be ready
-        run: |
-          until curl -s http://selenium:4444/wd/hub/status | grep -q '"ready":true'; do
-            echo "Waiting for Selenium Hub to be ready..."
-            sleep 5
-          done
-          echo "Selenium Hub is ready!"
 
       - name: Run Selenium Tests
         run: |
