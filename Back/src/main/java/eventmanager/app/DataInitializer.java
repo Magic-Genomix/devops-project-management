@@ -1,9 +1,10 @@
 package eventmanager.app;
 
-/*
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -17,6 +18,7 @@ public class DataInitializer implements CommandLineRunner {
     private final UserRepository userRepository;
 
     @Autowired
+    @Lazy
     private PasswordEncoder encoder;
 
     // Injection du repository via le constructeur
@@ -35,4 +37,3 @@ public class DataInitializer implements CommandLineRunner {
 
     }
 }
-*/
