@@ -39,7 +39,8 @@ jobs:
           distribution: 'zulu'
       
       - name: Run spring
-        run: mvn spring-boot:run -f Back/pom.xml
+        run: |
+          nohup mvn spring-boot:run -f Back/pom.xml &
       
       - name: Set up Node.js 20.19.0
         uses: actions/setup-node@v2
