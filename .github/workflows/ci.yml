@@ -191,5 +191,5 @@ jobs:
       - name: Run Selenium Tests
         run: |
             cd Front  # Se déplacer dans le répertoire Front
-            node test.js  # Exécuter le script de test.js
+            node testDocker.js  # Exécuter le script de test.js
     
