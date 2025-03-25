@@ -7,6 +7,7 @@ let options = new chrome.Options();
 options.addArguments('--no-sandbox'); // Peut être nécessaire pour certains environnements CI/CD
 options.addArguments('--disable-dev-shm-usage'); // Pour éviter les problèmes de mémoire dans des environnements à ressources limitées
 options.addArguments('--headless');  // Exécuter en mode headless (sans interface graphique)
+options.addArguments('--window-size=2560x1440'); // Définir une taille de fenêtre suffisamment grande pour voir l'élément
 
 
 (async function createEventTest() {
