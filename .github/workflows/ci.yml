@@ -140,6 +140,20 @@ jobs:
           cd Front  # Se déplacer dans le répertoire Front
           npm install  # Installez les dépendances nécessaires pour vos tests Selenium
 
+            
+      - name: Wait for Selenium Hub to be ready
+        run: |
+          # Try the first URL and check if it returns ready:true
+          if curl -s http://selenium:4444/wd/hub/status | grep -q '"ready":true'; then
+            echo "Selenium Hub is ready at http://selenium:4444";
+          elif curl -s http://localhost:4444/wd/hub/status | grep -q '"ready":true'; then
+            echo "Selenium Hub is ready at http://localhost:4444";
+          elif curl -s http://selenium-hub:4444/wd/hub/status | grep -q '"ready":true'; then
+            echo "Selenium Hub is ready at http://selenium-hub:4444";
+          else
+            echo "Selenium Hub is not ready.";
+            exit 1;
+          fi
 
       - name: Run Selenium Tests
         run: |
