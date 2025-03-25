@@ -5,20 +5,19 @@ require('chromedriver');
 
 
 
-  /*let driver = await new Builder().forBrowser('chrome').build();*/
-  let driver = await new Builder()
+  let driver = await new Builder().forBrowser('chrome').build();
+  /*let driver = await new Builder()
   .forBrowser('chrome')
   .usingServer('http://localhost:4444/wd/hub') // Pointing to the Selenium Hub
-  .build();
+  .build();*/
 
   try {
     // Étape 1: Ouvrir la page principale (localhost:4200)
     console.log("Page d'accueil ouverte...");
 
-    await driver.get('http://localhost:4200');
+    await driver.get('http://localhost:4200');  // Pour le localhost
 
-    //await driver.get('http://event-frontend:80');  // Utiliser le nom du service Docker pour l'URL dans Docker
-
+    //await driver.get('http://event-frontend:80');  // Pour Docker
   
     console.log("Page d'accueil ouverte...");
     await driver.sleep(1500); // Attendre 1.5 secondes avant de passer à l'étape suivante
