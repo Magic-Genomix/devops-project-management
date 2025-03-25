@@ -1,6 +1,6 @@
 package eventmanager.app;
 
-
+/*
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -35,3 +35,4 @@ public class DataInitializer implements CommandLineRunner {
 
     }
 }
+*/
