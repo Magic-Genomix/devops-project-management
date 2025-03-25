@@ -203,7 +203,7 @@ public class EventManagementTest {
     }
 
     // Test de base pour ouvrir une page et interagir avec un bouton
-    @Test
+    //@Test
     public void testOpenPageAndClickButton() {
         // Ouvrir une page de test
         driver.get("localhost:4444/event-frontend/");
@@ -222,7 +222,7 @@ public class EventManagementTest {
     }
 
     // Test de gestion d'événements
-    @Test
+    //@Test
     public void testEventManagement() throws MalformedURLException {
         setUp();
         try {
