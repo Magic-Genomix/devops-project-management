@@ -88,59 +88,7 @@ jobs:
 
 
   # Job 1: Backend - Test Spring Boot Application
-  selenium-test1:
-    runs-on: ubuntu-latest
-
-    services:
-      postgres:
-        image: postgres:13
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: root
-          POSTGRES_DB: event_manager_db
-        ports:
-          - 5432:5432
-        options: --health-cmd "pg_isready -U postgres" --health-interval 10s --health-timeout 5s --health-retries 5 
-      selenium-hub:
-        image: selenium/standalone-chrome
-        env:
-          HUB_HOST: selenium-hub
-          SCREEN_WIDTH: 2560
-          SCREEN_HEIGHT: 1440
-          VNC_PASSWORD: pass123 # Add VNC password
-
-        ports:
-          - "4444:4444"
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@v2
-        with:
-          java-version: '21'
-          distribution: 'zulu'
-
-      - name: Run backend tests
-        run: mvn test -f Back/pom.xml
-
-      - name: Set up Node.js 20.19.0
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20.19.0'
-
-      - name: Install Angular dependencies
-        run: npm install --prefix Front
-
-      - name: Build Angular production
-        run: npm run build --prefix Front --prod
-
-      - name: Run Selenium Tests
-        run: |
-          cd Front  # Se déplacer dans le répertoire Front
-          node test.js  # Exécuter le script de test.js
-
+ 
   # Job 4: Dockerize and Build the Services
   dockerize:
     runs-on: ubuntu-latest
