@@ -8,12 +8,13 @@ require('chromedriver');
   /*let driver = await new Builder().forBrowser('chrome').build();*/
   let driver = await new Builder()
   .forBrowser('chrome')
-  .usingServer('http://selenium-hub:4444/wd/hub') // 'http://localhost:4444/wd/hub'
+  .usingServer('http://selenium-hub:4444/wd/hub') // Pointing to the Selenium Hub
   .build();
 
   try {
     // Étape 1: Ouvrir la page principale (localhost:4200)
     //await driver.get('http://localhost:4200');
+    await driver.get('http://facebook.com');
     await driver.get('http://event-frontend:80');  // Utiliser le nom du service Docker pour l'URL dans Docker
 
     

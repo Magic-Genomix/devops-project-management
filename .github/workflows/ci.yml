@@ -118,7 +118,22 @@ jobs:
           FRONTEND_CONTAINER=$(docker ps -qf "name=event-frontend")
           HOSTNAME=$(docker exec $FRONTEND_CONTAINER hostname)
           echo "Host: $HOSTNAME"
-# Job 5: Selenium - Run Selenium Tests
+
+      - name: Set up Node.js 20.19.0
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20.19.0'
+
+      - name: Install dependencies
+        run: |
+            cd Front  # Se déplacer dans le répertoire Front
+            npm install  # Installez les dépendances nécessaires pour vos tests Selenium
+ 
+      - name: Run Selenium Tests
+        run: |
+            cd Front  # Se déplacer dans le répertoire Front
+            node test.js  # Exécuter le script de test.js
+    
 
 
 # Job 5: Selenium - Run Selenium Tests
@@ -147,32 +162,6 @@ jobs:
         run: |
           cd Front  # Se déplacer dans le répertoire Front
           npm install  # Installez les dépendances nécessaires pour vos tests Selenium
-
-      - name: Wait for Selenium Hub to be ready
-        run: |
-              echo "Waiting for Selenium Hub to be ready..."
-              for i in {1..10}; do
-                echo "Attempt $i/10..."
-                if curl -s http://selenium:4444/wd/hub/status | grep -q '"ready":true'; then
-                  echo "Selenium Hub is ready at http://selenium:4444";
-                  break;
-                elif curl -s http://localhost:4444/wd/hub/status | grep -q '"ready":true'; then
-                  echo "Selenium Hub is ready at http://localhost:4444";
-                  break;
-                elif curl -s http://selenium-hub:4444/wd/hub/status | grep -q '"ready":true'; then
-                  echo "Selenium Hub is ready at http://selenium-hub:4444";
-                  break;
-                else
-                  echo "Selenium Hub not ready yet. Retrying in 5 seconds...";
-                  sleep 5;
-                fi
-              done
-          
-              # If not ready after 10 retries, fail the job
-              if [[ $i -eq 10 ]]; then
-                echo "Selenium Hub is not ready after 10 attempts.";
-    
-              fi
 
               
       - name: Run Selenium Tests
