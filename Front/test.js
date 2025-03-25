@@ -15,9 +15,10 @@ require('chromedriver');
     // Étape 1: Ouvrir la page principale (localhost:4200)
     //await driver.get('http://localhost:4200');
     await driver.get('http://facebook.com');
+    console.log("Page d'accueil ouverte...");
     await driver.get('http://event-frontend:80');  // Utiliser le nom du service Docker pour l'URL dans Docker
 
-    
+  
     console.log("Page d'accueil ouverte...");
     await driver.sleep(1500); // Attendre 1.5 secondes avant de passer à l'étape suivante
 
