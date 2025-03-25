@@ -8,7 +8,7 @@ require('chromedriver');
   /*let driver = await new Builder().forBrowser('chrome').build();*/
   let driver = await new Builder()
   .forBrowser('chrome')
-  .usingServer('http://localhost:4444/wd/hub') // Pointing to the Selenium Hub
+  .usingServer('http://selenium-hub:4444/wd/hub') // Pointing to the Selenium Hub
   .build();
 
   try {

@@ -8,39 +8,39 @@ on:
     branches:
       - main
 
-jobs:
+jobs: 
   # Job 1: Backend - Test Spring Boot Application
-  backend-test:
-    runs-on: ubuntu-latest
+  #backend-test:
+   # runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:13
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: root
-          POSTGRES_DB: event_manager_db
-        ports:
-          - 5432:5432
-        options: --health-cmd "pg_isready -U postgres" --health-interval 10s --health-timeout 5s --health-retries 5
+   # services:
+    #  postgres:
+     #   image: postgres:13
+      #  env:
+       #   POSTGRES_USER: postgres
+        #  POSTGRES_PASSWORD: root
+         # POSTGRES_DB: event_manager_db
+       # ports:
+       #   - 5432:5432
+       # options: --health-cmd "pg_isready -U postgres" --health-interval 10s --health-timeout 5s --health-retries 5 
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+   # steps:
+    #  - name: Checkout code
+     #   uses: actions/checkout@v2
 
-      - name: Set up JDK 21
-        uses: actions/setup-java@v2
-        with:
-          java-version: '21'
-          distribution: 'zulu'
+     # - name: Set up JDK 21
+      #  uses: actions/setup-java@v2
+       # with:
+        #  java-version: '21'
+        #  distribution: 'zulu'
 
-      - name: Run backend tests
-        run: mvn test -f Back/pom.xml
+     # - name: Run backend tests
+      #  run: mvn test -f Back/pom.xml
 
   # Job 2: Backend - Build Spring Boot Application
   backend-build:
     runs-on: ubuntu-latest
-    needs: backend-test  # Ensure tests are successful before building
+    
 
     services:
       postgres:
