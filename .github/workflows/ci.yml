@@ -140,7 +140,11 @@ jobs:
           cd Front  # Se déplacer dans le répertoire Front
           npm install  # Installez les dépendances nécessaires pour vos tests Selenium
 
-            
+      - name: Ensure Selenium container is running
+        run: |
+            docker ps -a | grep selenium || (echo "Selenium container is not running" )
+            docker ps -a | grep selenium-hub || (echo "Selenium container is not running" )
+          
       - name: Wait for Selenium Hub to be ready
         run: |
             echo "Waiting for Selenium Hub to be ready..."
