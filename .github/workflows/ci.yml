@@ -40,7 +40,7 @@ jobs:
   # Job 2: Backend - Build Spring Boot Application
   backend-build:
     runs-on: ubuntu-latest
-    #needs: backend-test  # Ensure tests are successful before building
+    needs: backend-test  # Ensure tests are successful before building
 
     services:
       postgres:
