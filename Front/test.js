@@ -36,8 +36,8 @@ options.addArguments('--window-size=2560x1440'); // Définir une taille de fenê
     let loginLink = await driver.wait(until.elementLocated(By.css('a[routerLink="/login"]')), 10000);
     console.log("Lien 'Login' trouvé...");
     // Attendre que l'élément soit visible et interactable
-    await driver.wait(until.elementIsVisible(loginButton), 5000);  // Vérifie que l'élément est visible
-    await driver.wait(until.elementIsEnabled(loginButton), 5000);  // Vérifie que l'élément est activé (interactif)
+    await driver.wait(until.elementIsVisible(loginLink), 5000);  // Vérifie que l'élément est visible
+    await driver.wait(until.elementIsEnabled(loginLink), 5000);  // Vérifie que l'élément est activé (interactif)
     
     await loginLink.click();
     console.log("Clique sur le lien Login...");
