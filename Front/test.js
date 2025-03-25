@@ -1,5 +1,6 @@
 const { Builder, By, until } = require('selenium-webdriver');
 require('chromedriver');
+const chrome = require('selenium-webdriver/chrome');
 
 let options = new chrome.Options();
 // Supprimer la configuration de --user-data-dir pour ne pas utiliser de répertoire persistant
