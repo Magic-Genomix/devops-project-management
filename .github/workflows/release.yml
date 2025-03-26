@@ -1,9 +1,9 @@
 name: Release Workflow
 
 on:
-    push:
-        branches:
-          - main
+  push:
+    branches:
+      - main
 
 permissions:
   contents: write  # Allow pushing to the repository (this is required for actions like git commit or pushing changes)
@@ -74,7 +74,6 @@ jobs:
           sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
 
-
       - name: Build Docker images
         run: |
           docker-compose -f docker-compose.yml build
@@ -91,8 +90,6 @@ jobs:
           docker tag event-backend:latest ${{ secrets.DOCKER_USERNAME }}/event-app:backend-${NEW_VERSION}
           docker tag event-frontend:latest ${{ secrets.DOCKER_USERNAME }}/event-app:frontend-${NEW_VERSION}
 
-
-
       - name: Push Docker images to Docker Hub
         run: |
           NEW_VERSION=${{ steps.determine_version.outputs.new_version }}
@@ -101,8 +98,10 @@ jobs:
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
-
+        with:
+          files: |
+            ./Back/target/*.jar  # Path to your backend artifacts
+            ./Front/dist/*        # Path to your frontend artifacts
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG_NAME: ${{ env.NEW_VERSION }}
-
+          TAG_NAME: ${{ steps.determine_version.outputs.new_version }}  # Set the correct tag name
