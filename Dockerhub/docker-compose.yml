@@ -1,0 +1,64 @@
+services:
+  event-db:
+    image: postgres:13-alpine
+    container_name: event-db
+    environment:
+      POSTGRES_DB: event_manager_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+    volumes:
+      - event_db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - event-network
+
+  event-backend:
+    image: elabadi02/event-app:backend-v1.2.1  # Pull backend image from Docker Hub
+    container_name: event-backend
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - event-db
+    ports:
+      - "8080:8080"
+    networks:
+      - event-network
+    command: >
+      /bin/sh -c "mvn clean install && mvn test && java -jar target/your-app.jar"  # Commande pour build et test
+
+  event-frontend:
+    image: elabadi02/event-app:frontend-v1.2.1  # Pull frontend image from Docker Hub
+    container_name: event-frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - event-backend
+    healthcheck:
+      test: ["CMD", "curl", "--silent", "--fail", "http://localhost:4200"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 5s
+    networks:
+      - event-network
+
+  selenium-hub:
+    image: selenium/standalone-chrome
+    container_name: selenium-hub
+    environment:
+      - HUB_HOST=selenium-hub
+      - SCREEN_WIDTH=2560
+      - SCREEN_HEIGHT=1440
+      - VNC_PASSWORD=pass123  # Add VNC password
+    ports:
+      - "4444:4444"
+    networks:
+      - event-network
+
+networks:
+  event-network:
+    driver: bridge
+
+volumes:
+  event_db_data:
