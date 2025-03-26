@@ -36,7 +36,7 @@ jobs:
           echo "Commit message: $FLAG"
           if [[ "$FLAG" != *"major"* && "$FLAG" != *"minor"* && "$FLAG" != *"patch"* ]]; then
             echo "No versioning flag found in commit message. Exiting."
-            exit 1
+            exit 1  # Exit with a non-zero status to fail the job
           fi
 
       - name: Get latest tag
@@ -44,7 +44,7 @@ jobs:
         run: |
           VERSION=$(git describe --tags --abbrev=0 || echo "v0.0.0")
           echo "Latest version: $VERSION"
-          echo "LATEST_TAG=$VERSION" >> $GITHUB_ENV
+          echo "LATEST_TAG=$VERSION" >> $GITHUB_ENV  # Set the latest tag as an environment variable
 
       - name: Determine the new version based on the versioning flag
         id: determine_version
@@ -52,6 +52,7 @@ jobs:
           VERSION=${{ env.LATEST_TAG }}
           VERSION=${VERSION//v/}  # Remove 'v' from version string
 
+          # Extract major, minor, patch from the version
           IFS='.' read -r -a VERSION_ARRAY <<< "$VERSION"
           MAJOR=${VERSION_ARRAY[0]}
           MINOR=${VERSION_ARRAY[1]}
@@ -71,7 +72,7 @@ jobs:
 
           NEW_VERSION="v$MAJOR.$MINOR.$PATCH"
           echo "New version: $NEW_VERSION"
-          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV  # Set the new version as an environment variable
 
       - name: Create new Git tag (force push)
         run: |
@@ -81,12 +82,46 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+
+
+      # Docker Steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Set up Docker Compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+
+      - name: Build Docker images
+        run: |
+          docker-compose -f docker-compose.yml build
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      
+      - name: Tag Docker images with the new version
+        run: |
+          NEW_VERSION=${{ env.NEW_VERSION }}
+          docker tag event-backend:latest ${{ secrets.DOCKER_USERNAME }}/event-app:backend-${NEW_VERSION}
+          docker tag event-frontend:latest ${{ secrets.DOCKER_USERNAME }}/event-app:frontend-${NEW_VERSION}
+
+      - name: Push Docker images to Docker Hub
+        run: |
+          NEW_VERSION=${{ env.NEW_VERSION }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/event-app:backend-${NEW_VERSION}
+          docker push ${{ secrets.DOCKER_USERNAME }}/event-app:frontend-${NEW_VERSION}
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
             tag_name: ${{ env.NEW_VERSION }}  # Use the new version tag created earlier
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
     # Ensure that the job only runs when the CI workflow completes successfully
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
