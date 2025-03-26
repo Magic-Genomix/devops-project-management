@@ -22,10 +22,21 @@ jobs:
           git config --global user.email "melabadi@magic-genomix.com"
           git config --global user.name "elabadi02"
 
+      - name: Check commit message for versioning flag
+        id: check_commit_message
+        run: |
+          # Get the latest commit message
+          FLAG=$(git log -1 --pretty=%B)
+          echo "Commit message: $FLAG"
+          # Check if the commit message contains "major", "minor", or "patch"
+          if [[ "$FLAG" != *"major"* && "$FLAG" != *"minor"* && "$FLAG" != *"patch"* ]]; then
+            echo "No versioning flag found in commit message. Exiting."
+            exit 0  # Exit immediately if no versioning flag is found
+          fi
+
       - name: Get latest tag
         id: get_latest_tag
         run: |
-          # Get the latest tag from git
           VERSION=$(git describe --tags --abbrev=0 || echo "v0.0.0")
           echo "Latest version: $VERSION"
           echo "LATEST_TAG=$VERSION" >> $GITHUB_ENV  # Set the latest tag as an environment variable
@@ -33,7 +44,6 @@ jobs:
       - name: Determine the new version based on the versioning flag
         id: determine_version
         run: |
-          # Get versioning flag from commit message or input (e.g., 'major', 'minor', 'patch')
           VERSION=${{ env.LATEST_TAG }}
           VERSION=${VERSION//v/}  # Remove 'v' from the version string
 
