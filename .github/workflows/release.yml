@@ -60,11 +60,12 @@ jobs:
           echo "New version: $NEW_VERSION"
           echo "::set-output name=new_version::$NEW_VERSION"
 
-      - name: Create new Git tag
+      - name: Create new Git tag (force push)
         run: |
-          NEW_VERSION=${{ steps.determine_version.outputs.new_version }}
-          git tag $NEW_VERSION
-          git push origin $NEW_VERSION
+            NEW_VERSION=${{ steps.determine_version.outputs.new_version }}
+            git tag -f $NEW_VERSION  # Force create the tag locally
+            git push origin -f $NEW_VERSION  # Force push the tag to the remote repository
+        
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
