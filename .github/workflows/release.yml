@@ -1,11 +1,9 @@
 name: Release Workflow
 
 on:
-  workflow_run:
-    workflows: ["CI Workflow"]  # Name of your CI workflow, e.g., "CI Workflow"
-    types:
-      - completed
-
+    push:
+        branches:
+          - main
 jobs:
   versioning-and-release:
     runs-on: ubuntu-latest
