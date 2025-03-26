@@ -76,4 +76,3 @@ jobs:
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          #TAG_NAME: ${{ steps.determine_version.outputs.new_version }}  # Set the correct tag name
