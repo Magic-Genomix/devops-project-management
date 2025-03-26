@@ -16,11 +16,18 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+            fetch-depth: 0 
 
       - name: Set up Git
         run: |
           git config --global user.email "melabadi@magic-genomix.com"
           git config --global user.name "elabadi02"
+
+      - name: Fetch all tags
+        run: |
+          git fetch --tags  # Fetch all tags
+
 
       - name: Check commit message for versioning flag
         id: check_commit_message
