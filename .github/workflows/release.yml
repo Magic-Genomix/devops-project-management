@@ -65,7 +65,8 @@ jobs:
             NEW_VERSION=${{ steps.determine_version.outputs.new_version }}
             git tag -f $NEW_VERSION  # Force create the tag locally
             git push origin -f $NEW_VERSION  # Force push the tag to the remote repository
-        
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -100,10 +101,8 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-            files: |
-              ./Back/target/*.jar  # Path to your backend artifacts
-              ./Front/dist/*        # Path to your frontend artifacts
+            TAG_NAME: ${{ steps.determine_version.outputs.new_version }}  # Set the correct tag name
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG_NAME: ${{ steps.determine_version.outputs.new_version }}  # Set the correct tag name
+          #TAG_NAME: ${{ steps.determine_version.outputs.new_version }}  # Set the correct tag name
