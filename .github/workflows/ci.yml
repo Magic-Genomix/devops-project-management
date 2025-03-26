@@ -192,48 +192,20 @@ jobs:
         run: |
             cd Front  # Se déplacer dans le répertoire Front
             node testDocker.js  # Exécuter le script de test.js
-    
 
-
-  # Previous jobs (backend-test, backend-build, frontend, selenium, dockerize-selenium-test)
-
-  # Job 5: Push Docker images to a single repository in Docker Hub with versioning
-  push-docker-image:
-    runs-on: ubuntu-latest
-    needs: [dockerize-selenium-test]  # Ensure this job runs after the dockerize-selenium-test job
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
+      # Après les tests Selenium, on fait le push des images Docker
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}  # Make sure to set this secret in your repository settings
-          password: ${{ secrets.DOCKER_PASSWORD }}  # Make sure to set this secret in your repository settings
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Set image tag
-        id: vars
+      - name: Tag and Push Docker images
         run: |
-          IMAGE_TAG=latest-${GITHUB_SHA:0:7}  # Using the first 7 characters of the commit SHA as the tag
-          echo "IMAGE_TAG=${IMAGE_TAG}" >> $GITHUB_ENV
-          echo "Using tag: $IMAGE_TAG"
-      
-      - name: Build Docker image for Backend
-        run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/event-app-backend:${{ env.IMAGE_TAG }} -f Back/Dockerfile .
+          # Tag the images
+          docker tag event-backend:latest ${{ secrets.DOCKER_USERNAME }}/event-app:backend-latest
+          docker tag event-frontend:latest ${{ secrets.DOCKER_USERNAME }}/event-app:frontend-latest
           
-      - name: Build Docker image for Frontend
-        run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/event-app-frontend:${{ env.IMAGE_TAG }} -f Front/Dockerfile .
-      
-      - name: Push Backend image to Docker Hub
-        run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/event-app-backend:${{ env.IMAGE_TAG }}
-
-      - name: Push Frontend image to Docker Hub
-        run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/event-app-frontend:${{ env.IMAGE_TAG }}
+          # Push images to Docker Hub
+          docker push ${{ secrets.DOCKER_USERNAME }}/event-app:backend-latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/event-app:frontend-latest
