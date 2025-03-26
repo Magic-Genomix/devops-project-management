@@ -31,7 +31,7 @@ jobs:
           # Check if the commit message contains "major", "minor", or "patch"
           if [[ "$FLAG" != *"major"* && "$FLAG" != *"minor"* && "$FLAG" != *"patch"* ]]; then
             echo "No versioning flag found in commit message. Exiting."
-            exit 0  # Exit immediately if no versioning flag is found
+            exit 1  # Exit with a non-zero status to fail the job
           fi
 
       - name: Get latest tag
@@ -81,6 +81,6 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-            tag_name: ${{ env.NEW_VERSION }}  # Use the new version tag created earlie
+            tag_name: ${{ env.NEW_VERSION }}  # Use the new version tag created earlier
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
