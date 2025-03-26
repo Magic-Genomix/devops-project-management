@@ -1,0 +1,103 @@
+name: Release Workflow
+
+on:
+  workflow_run:
+    workflows: ["CI Workflow"]  # Name of your CI workflow, e.g., "CI Workflow"
+    types:
+      - completed
+
+jobs:
+  versioning-and-release:
+    runs-on: ubuntu-latest
+    #needs: ci-workflow  # Ensure release is triggered after successful CI
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Git
+        run: |
+          git config --global user.email "melabadi@magic-genomix.com"
+          git config --global user.name "elabadi02"
+
+      - name: Get latest tag
+        id: get_latest_tag
+        run: |
+          VERSION=$(git describe --tags --abbrev=0 || echo "v0.0.0")
+          echo "Latest version: $VERSION"
+          echo "::set-output name=version::$VERSION"
+
+      - name: Determine the new version based on the versioning flag
+        id: determine_version
+        run: |
+          # Get versioning flag from commit message or input (e.g., 'major', 'minor', 'patch')
+          VERSION=${{ steps.get_latest_tag.outputs.version }}
+          VERSION=${VERSION//v/}  # Remove 'v' from the version string
+
+          # Extract major, minor, patch from the version
+          IFS='.' read -r -a VERSION_ARRAY <<< "$VERSION"
+          MAJOR=${VERSION_ARRAY[0]}
+          MINOR=${VERSION_ARRAY[1]}
+          PATCH=${VERSION_ARRAY[2]}
+
+          # Check the flag in commit message (use flags like 'major', 'minor', 'patch' in commit message)
+          FLAG=$(git log -1 --pretty=%B)
+          if [[ "$FLAG" == *"major"* ]]; then
+            MAJOR=$((MAJOR + 1))
+            MINOR=0
+            PATCH=0
+          elif [[ "$FLAG" == *"minor"* ]]; then
+            MINOR=$((MINOR + 1))
+            PATCH=0
+          elif [[ "$FLAG" == *"patch"* ]]; then
+            PATCH=$((PATCH + 1))
+          fi
+
+          NEW_VERSION="v$MAJOR.$MINOR.$PATCH"
+          echo "New version: $NEW_VERSION"
+          echo "::set-output name=new_version::$NEW_VERSION"
+
+      - name: Create new Git tag
+        run: |
+          NEW_VERSION=${{ steps.determine_version.outputs.new_version }}
+          git tag $NEW_VERSION
+          git push origin $NEW_VERSION
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Set up Docker Compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+
+
+      - name: Build Docker images
+        run: |
+          docker-compose -f docker-compose.yml build
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      
+      - name: Tag Docker images with the new version
+        run: |
+          NEW_VERSION=${{ steps.determine_version.outputs.new_version }}
+          docker tag event-backend:latest ${{ secrets.DOCKER_USERNAME }}/event-app:backend-${NEW_VERSION}
+          docker tag event-frontend:latest ${{ secrets.DOCKER_USERNAME }}/event-app:frontend-${NEW_VERSION}
+
+
+
+      - name: Push Docker images to Docker Hub
+        run: |
+          NEW_VERSION=${{ steps.determine_version.outputs.new_version }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/event-app:backend-${NEW_VERSION}
+          docker push ${{ secrets.DOCKER_USERNAME }}/event-app:frontend-${NEW_VERSION}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
