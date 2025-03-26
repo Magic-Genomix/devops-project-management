@@ -16,6 +16,7 @@ services:
   event-backend:
     build:
       context: ./Back
+    image: event-backend:latest  
     container_name: event-backend
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -32,6 +33,8 @@ services:
   event-frontend:
     build:
       context: ./Front
+    image: event-frontend:latest  
+
     container_name: event-frontend
     ports:
       - "4200:80"
