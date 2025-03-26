@@ -6,7 +6,7 @@ on:
       - main
 
 permissions:
-  contents: write  # Allow pushing to the repository (this is required for actions like git commit or pushing changes)
+  contents: write  # Allow pushing to the repository (this is required for actions like git commit or pushing changes))
   id-token: write  # If you need to generate release tags or other actions that interact with the GitHub API
 
 jobs:
