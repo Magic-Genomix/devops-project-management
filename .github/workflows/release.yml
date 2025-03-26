@@ -98,10 +98,7 @@ jobs:
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            ./Back/target/*.jar  # Path to your backend artifacts
-            ./Front/dist/*        # Path to your frontend artifacts
+
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG_NAME: ${{ steps.determine_version.outputs.new_version }}  # Set the correct tag name
