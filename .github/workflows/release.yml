@@ -2,7 +2,7 @@ name: Release Workflow
 
 on:
   workflow_run:
-    workflows: ["CI Workflow"]  # Name of your CI workflow (ci.yml)
+    workflows: ["CI/CD Workflow"]  # Name of your CI workflow (ci.yml)
     types:
       - completed  # Trigger when the workflow completes
 
