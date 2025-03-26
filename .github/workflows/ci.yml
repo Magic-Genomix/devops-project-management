@@ -224,7 +224,7 @@ jobs:
       
       - name: Build Docker image for Backend
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/event-app-backend:${{ env.IMAGE_TAG }} -f Backend/Dockerfile .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/event-app-backend:${{ env.IMAGE_TAG }} -f Back/Dockerfile .
           
       - name: Build Docker image for Frontend
         run: |
