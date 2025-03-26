@@ -1,13 +1,14 @@
 name: Release Workflow
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["CI Workflow"]  # Name of your CI workflow (ci.yml)
+    types:
+      - completed  # Trigger when the workflow completes
 
 permissions:
-  contents: write  # Allow pushing to the repository (this is required for actions like git commit or pushing changes)
-  id-token: write  # If you need to generate release tags or other actions that interact with the GitHub API
+  contents: write  # Allow pushing to the repository (required for git commit or pushing changes)
+  id-token: write  # Required for creating release tags
 
 jobs:
   versioning-and-release:
@@ -17,7 +18,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-            fetch-depth: 0 
+          fetch-depth: 0  # Ensure full history, including tags
 
       - name: Set up Git
         run: |
@@ -28,17 +29,14 @@ jobs:
         run: |
           git fetch --tags  # Fetch all tags
 
-
       - name: Check commit message for versioning flag
         id: check_commit_message
         run: |
-          # Get the latest commit message
           FLAG=$(git log -1 --pretty=%B)
           echo "Commit message: $FLAG"
-          # Check if the commit message contains "major", "minor", or "patch"
           if [[ "$FLAG" != *"major"* && "$FLAG" != *"minor"* && "$FLAG" != *"patch"* ]]; then
             echo "No versioning flag found in commit message. Exiting."
-            exit 1  # Exit with a non-zero status to fail the job
+            exit 1
           fi
 
       - name: Get latest tag
@@ -46,21 +44,19 @@ jobs:
         run: |
           VERSION=$(git describe --tags --abbrev=0 || echo "v0.0.0")
           echo "Latest version: $VERSION"
-          echo "LATEST_TAG=$VERSION" >> $GITHUB_ENV  # Set the latest tag as an environment variable
+          echo "LATEST_TAG=$VERSION" >> $GITHUB_ENV
 
       - name: Determine the new version based on the versioning flag
         id: determine_version
         run: |
           VERSION=${{ env.LATEST_TAG }}
-          VERSION=${VERSION//v/}  # Remove 'v' from the version string
+          VERSION=${VERSION//v/}  # Remove 'v' from version string
 
-          # Extract major, minor, patch from the version
           IFS='.' read -r -a VERSION_ARRAY <<< "$VERSION"
           MAJOR=${VERSION_ARRAY[0]}
           MINOR=${VERSION_ARRAY[1]}
           PATCH=${VERSION_ARRAY[2]}
 
-          # Check the flag in commit message (use flags like 'major', 'minor', 'patch' in commit message)
           FLAG=$(git log -1 --pretty=%B)
           if [[ "$FLAG" == *"major"* ]]; then
             MAJOR=$((MAJOR + 1))
@@ -75,13 +71,13 @@ jobs:
 
           NEW_VERSION="v$MAJOR.$MINOR.$PATCH"
           echo "New version: $NEW_VERSION"
-          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV  # Set the new version as an environment variable
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
 
       - name: Create new Git tag (force push)
         run: |
             NEW_VERSION=${{ env.NEW_VERSION }}
             git tag -f $NEW_VERSION  # Force create the tag locally
-            git push origin -f $NEW_VERSION  # Force push the tag to the remote repository
+            git push origin -f $NEW_VERSION  # Force push the tag to the remote
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -91,3 +87,6 @@ jobs:
             tag_name: ${{ env.NEW_VERSION }}  # Use the new version tag created earlier
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    # Ensure that the job only runs when the CI workflow completes successfully
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
